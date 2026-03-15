@@ -55,6 +55,15 @@ export default function TransactionsPage() {
     <div className="container">
       <h1 style={{ marginBottom: '2rem', color: '#667eea' }}>🔄 Transactions</h1>
 
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+        <button onClick={() => router.push('/transactions/issue')} className="btn btn-primary">
+          📖 Issue Book
+        </button>
+        <button onClick={() => router.push('/transactions/return')} className="btn btn-secondary">
+          ↩️ Return Book
+        </button>
+      </div>
+
       {error && <div className="alert alert-error">{error}</div>}
 
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '2px solid #eee' }}>

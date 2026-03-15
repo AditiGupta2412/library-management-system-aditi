@@ -1,0 +1,4 @@
+old-origin	https://github.com/AditiGupta2412/Axciom-Assignment-MERN.git (fetch)
+old-origin	https://github.com/AditiGupta2412/Axciom-Assignment-MERN.git (push)
+origin	https://github.com/AditiGupta2412/library-management-system-aditi.git (fetch)
+origin	https://github.com/AditiGupta2412/library-management-system-aditi.git (push)
