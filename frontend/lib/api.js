@@ -7,7 +7,7 @@ const api = axios.create({
   timeout: 10000,
 });
 
-// Add token to all requests
+
 api.interceptors.request.use((config) => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   if (token) {
@@ -16,7 +16,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle errors
+
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {

@@ -47,54 +47,54 @@ export default function DashboardPage() {
 
   return (
     <div className="container">
-      <h1 style={{ marginBottom: '2rem', color: '#667eea' }}>📊 Dashboard</h1>
+      <h1 style={{ marginBottom: '2rem', color: '#667eea' }}>Dashboard</h1>
 
       <div className="grid">
         <div className="card">
-          <div className="card-title">📚 Total Books</div>
+          <div className="card-title">Total Books</div>
           <div className="card-value">{stats?.totalBooks || 0}</div>
         </div>
 
         <div className="card">
-          <div className="card-title">🎬 Total Movies</div>
+          <div className="card-title">Total Movies</div>
           <div className="card-value">{stats?.totalMovies || 0}</div>
         </div>
 
         <div className="card">
-          <div className="card-title">👥 Total Members</div>
+          <div className="card-title">Total Members</div>
           <div className="card-value">{stats?.totalMembers || 0}</div>
         </div>
 
         <div className="card">
-          <div className="card-title">⚡ Active Issues</div>
+          <div className="card-title">Active Issues</div>
           <div className="card-value">{stats?.activeIssues || 0}</div>
         </div>
 
         <div className="card">
-          <div className="card-title">⚠️ Overdue Issues</div>
+          <div className="card-title">Overdue Issues</div>
           <div className="card-value" style={{ color: '#f44336' }}>
             {stats?.overdueIssues || 0}
           </div>
         </div>
 
         <div className="card">
-          <div className="card-title">👨‍💼 Total Users</div>
+          <div className="card-title">Total Users</div>
           <div className="card-value">{stats?.totalUsers || 0}</div>
         </div>
       </div>
 
       <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
         <a href="/books" className="btn btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
-          📚 Books
+          Books
         </a>
         <a href="/memberships" className="btn btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
-          👥 Memberships
+          Memberships
         </a>
         <a href="/transactions" className="btn btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
-          🔄 Transactions
+          Transactions
         </a>
         <a href="/reports" className="btn btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
-          📊 Reports
+          Reports
         </a>
       </div>
     </div>

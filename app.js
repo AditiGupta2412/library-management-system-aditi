@@ -1,13 +1,7 @@
-// =====================================================
-// Library Management System — App Router & Pages
-// =====================================================
-
-// ---- State ----
 let currentPage  = null;
-let pendingIssue = null;   // book selected from availability search
-let pendingReturn = null;  // issue record for pay-fine flow
+let pendingIssue = null;
+let pendingReturn = null;
 
-// ---- Router ----
 function navigate(page, data) {
   if (data !== undefined) {
     if (page === 'pay-fine')   pendingReturn = data;
@@ -21,7 +15,6 @@ function renderPage(page) {
   const root = document.getElementById('app');
   if (!root) return;
 
-  // Auth guard
   const sess = DB.getSession();
   const publicPages = ['login','logout'];
   if (!sess && !publicPages.includes(page)) { navigate('login'); return; }
@@ -57,7 +50,7 @@ function renderPage(page) {
   }
 }
 
-// ---- Shell (layout with topbar + sidebar) ----
+
 function buildShell(content, activeSection) {
   const sess    = DB.getSession();
   const isAdm   = sess && sess.isAdmin;
@@ -66,19 +59,19 @@ function buildShell(content, activeSection) {
   const maintLink = isAdm ? `
     <span class="sidebar-section-title">Admin</span>
     <a class="sidebar-item ${activeSection==='maintenance'?'active':''}" onclick="navigate('maintenance')">
-      <span class="si-icon">🔧</span> Maintenance
+      <span class="si-icon"></span> Maintenance
     </a>
     <div class="sidebar-divider"></div>` : '';
 
   return `
   <div class="topbar">
     <a class="topbar-brand" onclick="navigate('chart')">
-      <div class="brand-icon">📚</div>
+      <div class="brand-icon"></div>
       LibraryMS
     </a>
     <div class="topbar-actions">
-      <button class="topbar-nav-btn" onclick="navigate('chart')">📊 Chart</button>
-      <button class="topbar-nav-btn" onclick="navigate('${homeUrl}')">🏠 Home</button>
+      <button class="topbar-nav-btn" onclick="navigate('chart')">Chart</button>
+      <button class="topbar-nav-btn" onclick="navigate('${homeUrl}')">Home</button>
     </div>
   </div>
   <div class="page-wrapper">
@@ -86,16 +79,16 @@ function buildShell(content, activeSection) {
       ${maintLink}
       <span class="sidebar-section-title">Navigation</span>
       <a class="sidebar-item ${activeSection==='home'?'active':''}"         onclick="navigate('${homeUrl}')">
-        <span class="si-icon">🏠</span> Home
+        <span class="si-icon"></span> Home
       </a>
       <a class="sidebar-item ${activeSection==='transactions'?'active':''}" onclick="navigate('transactions')">
-        <span class="si-icon">🔄</span> Transactions
+        <span class="si-icon"></span> Transactions
       </a>
       <a class="sidebar-item ${activeSection==='reports'?'active':''}"      onclick="navigate('reports')">
-        <span class="si-icon">📋</span> Reports
+        <span class="si-icon"></span> Reports
       </a>
       <div class="sidebar-logout">
-        <button class="sidebar-logout-btn" onclick="doLogout()">🚪 Log Out</button>
+        <button class="sidebar-logout-btn" onclick="doLogout()">Log Out</button>
       </div>
     </aside>
     <main class="main-content page-enter">
@@ -106,16 +99,14 @@ function buildShell(content, activeSection) {
 
 function doLogout() { DB.clearSession(); navigate('logout'); }
 
-// =====================================================
-// LOGIN
-// =====================================================
+
 function buildLogin() {
   return `
   <div class="login-root">
-    <a class="login-chart-link" onclick="navigate('chart')">📊 View Chart</a>
+    <a class="login-chart-link" onclick="navigate('chart')">View Chart</a>
     <div class="login-panel">
       <div class="login-logo">
-        <div class="login-logo-icon">📚</div>
+        <div class="login-logo-icon"></div>
         <div class="login-title">Library Management System</div>
         <div class="login-subtitle">Sign in to your account</div>
       </div>
@@ -152,9 +143,7 @@ function doLogin() {
   else       { err.textContent = '⚠️ Invalid credentials. Please try again.'; err.classList.add('show'); }
 }
 
-// =====================================================
-// LOGOUT
-// =====================================================
+
 function buildLogout() {
   return `
   <div style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-main);">
@@ -163,7 +152,7 @@ function buildLogout() {
       <button class="topbar-nav-btn" onclick="navigate('login')">Login</button>
     </div>
     <div class="status-page page-enter">
-      <div class="status-page-icon status-icon-logout">👋</div>
+      <div class="status-page-icon status-icon-logout"></div>
       <div class="status-title">You have successfully logged out.</div>
       <div class="status-subtitle">Thank you for using Library Management System.</div>
       <button class="btn btn-primary" onclick="navigate('login')">Sign In Again →</button>
@@ -171,26 +160,24 @@ function buildLogout() {
   </div>`;
 }
 
-// =====================================================
-// ADMIN HOME
-// =====================================================
+
 function buildAdminHome() {
   const cats = DB.CATEGORIES;
   const books = DB.getBooks(); const issues = DB.getActiveIssues(); const mems = DB.getMemberships();
   const rows = cats.map(c => `<tr><td>${c.codeFrom}</td><td>${c.codeTo}</td><td>${c.label}</td></tr>`).join('');
   return `
   <div class="page-header">
-    <div class="page-title">Welcome back, Admin 👋</div>
+    <div class="page-title">Welcome back, Admin</div>
     <div class="page-subtitle">Library Management System — Admin Dashboard</div>
   </div>
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-card-icon">📚</div><div class="stat-card-label">Total Books</div><div class="stat-card-value">${books.filter(b=>b.type==='book').length}</div></div>
-    <div class="stat-card"><div class="stat-card-icon">🎬</div><div class="stat-card-label">Total Movies</div><div class="stat-card-value">${books.filter(b=>b.type==='movie').length}</div></div>
-    <div class="stat-card"><div class="stat-card-icon">👥</div><div class="stat-card-label">Members</div><div class="stat-card-value">${mems.filter(m=>m.status==='Active').length}</div></div>
-    <div class="stat-card"><div class="stat-card-icon">🔄</div><div class="stat-card-label">Active Issues</div><div class="stat-card-value">${issues.length}</div></div>
+    <div class="stat-card"><div class="stat-card-icon"></div><div class="stat-card-label">Total Books</div><div class="stat-card-value">${books.filter(b=>b.type==='book').length}</div></div>
+    <div class="stat-card"><div class="stat-card-icon"></div><div class="stat-card-label">Total Movies</div><div class="stat-card-value">${books.filter(b=>b.type==='movie').length}</div></div>
+    <div class="stat-card"><div class="stat-card-icon"></div><div class="stat-card-label">Members</div><div class="stat-card-value">${mems.filter(m=>m.status==='Active').length}</div></div>
+    <div class="stat-card"><div class="stat-card-icon"></div><div class="stat-card-label">Active Issues</div><div class="stat-card-value">${issues.length}</div></div>
   </div>
   <div class="card">
-    <div class="card-header"><div class="card-title"><div class="card-title-icon">📂</div>Book Categories</div></div>
+    <div class="card-header"><div class="card-title"><div class="card-title-icon"></div>Book Categories</div></div>
     <div class="table-wrapper">
       <table>
         <thead><tr><th>Code No From</th><th>Code No To</th><th>Category</th></tr></thead>
@@ -201,15 +188,13 @@ function buildAdminHome() {
 }
 function bindAdminHome() {}
 
-// =====================================================
-// USER HOME
-// =====================================================
+
 function buildUserHome() {
   const cats = DB.CATEGORIES;
   const rows = cats.map(c => `<tr><td>${c.codeFrom}</td><td>${c.codeTo}</td><td>${c.label}</td></tr>`).join('');
   return `
   <div class="page-header">
-    <div class="page-title">Welcome to LibraryMS 📚</div>
+    <div class="page-title">Welcome back</div>
     <div class="page-subtitle">Browse books, manage issues, and view your reports.</div>
   </div>
   <div class="card">
@@ -223,12 +208,10 @@ function buildUserHome() {
   </div>`;
 }
 
-// =====================================================
-// STATUS PAGES
-// =====================================================
+
 function buildTxSuccess() {
   return `<div class="status-page page-enter">
-    <div class="status-page-icon status-icon-success">✅</div>
+    <div class="status-page-icon status-icon-success"></div>
     <div class="status-title">Transaction completed successfully.</div>
     <div class="status-subtitle">The operation has been saved. You can continue using the system.</div>
     <div style="display:flex;gap:12px">
@@ -239,7 +222,7 @@ function buildTxSuccess() {
 }
 function buildTxCancel() {
   return `<div class="status-page page-enter">
-    <div class="status-page-icon status-icon-cancel">❌</div>
+    <div class="status-page-icon status-icon-cancel"></div>
     <div class="status-title">Transaction cancelled.</div>
     <div class="status-subtitle">No changes were saved.</div>
     <div style="display:flex;gap:12px">
@@ -249,13 +232,11 @@ function buildTxCancel() {
   </div>`;
 }
 
-// =====================================================
-// CHART
-// =====================================================
+
 function buildChart() {
   return `
   <div class="page-header">
-    <div class="page-title">📊 Application Flow Chart</div>
+    <div class="page-title">Application Flow Chart</div>
     <div class="page-subtitle">Overview of screens and navigation in Library Management System</div>
   </div>
   <div class="card">

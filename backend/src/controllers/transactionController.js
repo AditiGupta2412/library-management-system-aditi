@@ -1,7 +1,7 @@
 const Issue = require('../models/Issue');
 const Book = require('../models/Book');
 
-// Issue a book
+
 exports.issueBook = async (req, res) => {
   try {
     const { serialNo, membershipId, issueId, bookName, author, returnDate } = req.body;
@@ -38,7 +38,7 @@ exports.issueBook = async (req, res) => {
   }
 };
 
-// Return a book and calculate fine
+
 exports.returnBook = async (req, res) => {
   try {
     const { issueId } = req.body;
@@ -49,7 +49,7 @@ exports.returnBook = async (req, res) => {
       return res.status(404).json({ message: 'Issue not found' });
     }
 
-    // Calculate fine (₹10 per day)
+
     let fine = 0;
     if (actualReturnDate > new Date(issue.returnDate)) {
       const daysOverdue = Math.ceil((actualReturnDate - new Date(issue.returnDate)) / (1000 * 60 * 60 * 24));
@@ -62,7 +62,7 @@ exports.returnBook = async (req, res) => {
 
     await issue.save();
 
-    // Update book status only if no fine or fine is paid
+
     if (fine === 0) {
       await Book.findOneAndUpdate(
         { serialNo: issue.serialNo },
@@ -76,7 +76,7 @@ exports.returnBook = async (req, res) => {
   }
 };
 
-// Pay fine
+
 exports.payFine = async (req, res) => {
   try {
     const { issueId } = req.body;
@@ -91,7 +91,7 @@ exports.payFine = async (req, res) => {
 
     await issue.save();
 
-    // Mark book as available
+
     await Book.findOneAndUpdate(
       { serialNo: issue.serialNo },
       { status: 'Available' }
@@ -103,7 +103,7 @@ exports.payFine = async (req, res) => {
   }
 };
 
-// Get all issues
+
 exports.getIssues = async (req, res) => {
   try {
     const issues = await Issue.find();
@@ -113,7 +113,7 @@ exports.getIssues = async (req, res) => {
   }
 };
 
-// Get active issues
+
 exports.getActiveIssues = async (req, res) => {
   try {
     const issues = await Issue.find({ status: 'Active' });
@@ -123,7 +123,7 @@ exports.getActiveIssues = async (req, res) => {
   }
 };
 
-// Get overdue issues
+
 exports.getOverdueIssues = async (req, res) => {
   try {
     const issues = await Issue.find({ status: 'Overdue' });
